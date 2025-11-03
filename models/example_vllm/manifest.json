@@ -1,0 +1,22 @@
+{
+  "id": "vllm-remote",
+  "name": "vLLM Remote Endpoint",
+  "adapter": "vllm_remote",
+  "files": {
+    "weights": "http://localhost:8001"
+  },
+  "format": "Remote",
+  "context_length": 4096,
+  "prompt_template": {
+    "chat": "{role}: {content}\n"
+  },
+  "defaults": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 256
+  },
+  "metadata": {
+    "description": "Example vLLM remote endpoint",
+    "note": "Update the URL in files.weights to your vLLM server"
+  }
+}

@@ -1,0 +1,91 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# Model files (large binaries)
+*.gguf
+*.bin
+*.safetensors
+*.pth
+*.pt
+*.onnx
+models/*/weights/
+models/*/tokenizer/
+
+# Lab artifacts (can be large)
+lab/datasets/*.jsonl
+lab/traces/*
+lab/deltas/*
+lab/reports/*
+lab/snapshots/*/
+
+# Keep structure but ignore contents
+!lab/datasets/.gitkeep
+!lab/traces/.gitkeep
+!lab/deltas/.gitkeep
+!lab/auras/.gitkeep
+!lab/snapshots/.gitkeep
+!lab/skillpacks/.gitkeep
+!lab/reports/.gitkeep
+
+# Streamlit
+.streamlit/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# OS
+Thumbs.db
+.DS_Store
