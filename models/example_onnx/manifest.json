@@ -1,0 +1,22 @@
+{
+  "id": "tiny-onnx",
+  "name": "Tiny ONNX Model",
+  "adapter": "onnx_runtime",
+  "files": {
+    "weights": "model.onnx",
+    "tokenizer": "tokenizer"
+  },
+  "format": "ONNX",
+  "dtype": "float32",
+  "context_length": 512,
+  "defaults": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 128,
+    "threads": 2
+  },
+  "metadata": {
+    "description": "Example tiny ONNX model for testing",
+    "note": "Place your ONNX model file here"
+  }
+}

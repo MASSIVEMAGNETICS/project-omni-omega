@@ -1,0 +1,30 @@
+{
+  "id": "llama-7b-gguf",
+  "name": "LLaMA 7B GGUF",
+  "adapter": "llama_cpp",
+  "files": {
+    "weights": "llama-7b-q4_0.gguf"
+  },
+  "format": "GGUF",
+  "dtype": "Q4_0",
+  "context_length": 2048,
+  "prompt_template": {
+    "system": "System: {content}\n",
+    "chat": "{role}: {content}\n",
+    "stop": ["\n\n"]
+  },
+  "defaults": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 256,
+    "threads": 2
+  },
+  "lora": {
+    "enabled": false
+  },
+  "metadata": {
+    "description": "Example LLaMA 7B model in GGUF format",
+    "size": "4GB",
+    "quantization": "Q4_0"
+  }
+}

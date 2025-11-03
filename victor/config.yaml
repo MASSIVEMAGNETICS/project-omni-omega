@@ -1,0 +1,7 @@
+# Victor Configuration
+model_name: "Victor Custom Backend"
+version: "1.0.0"
+
+# Custom parameters
+custom_param_1: "value1"
+custom_param_2: 42

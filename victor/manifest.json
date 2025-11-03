@@ -1,0 +1,19 @@
+{
+  "id": "victor-custom",
+  "name": "Victor Custom Backend",
+  "adapter": "victor_custom",
+  "files": {
+    "weights": "."
+  },
+  "format": "Custom",
+  "context_length": 2048,
+  "defaults": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 256
+  },
+  "metadata": {
+    "description": "Example Victor custom backend",
+    "note": "Implement runner.py with the Victor interface"
+  }
+}

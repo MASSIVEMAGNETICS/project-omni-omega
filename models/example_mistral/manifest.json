@@ -1,0 +1,26 @@
+{
+  "id": "mistral-7b-hf",
+  "name": "Mistral 7B HuggingFace",
+  "adapter": "hf_transformers",
+  "files": {
+    "weights": "mistralai/Mistral-7B-v0.1",
+    "tokenizer": "mistralai/Mistral-7B-v0.1"
+  },
+  "format": "HuggingFace",
+  "dtype": "float32",
+  "context_length": 4096,
+  "prompt_template": {
+    "chat": "<s>[INST] {content} [/INST]",
+    "stop": ["</s>"]
+  },
+  "defaults": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 256,
+    "threads": 2
+  },
+  "metadata": {
+    "description": "Example Mistral 7B model from HuggingFace",
+    "note": "This will download from HuggingFace Hub on first load"
+  }
+}
