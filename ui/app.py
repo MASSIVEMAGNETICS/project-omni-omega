@@ -1,5 +1,6 @@
 """
 OmniLoader Streamlit UI - Dual-tab interface (Chat | Lab)
+Neon/grid GUI theme applied. Footer credit added.
 """
 import streamlit as st
 import requests
@@ -18,14 +19,19 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Dark Neon Cyberpunk Theme
+# Custom CSS - Neon/Grid GUI Theme
 st.markdown("""
 <style>
-    /* Main app background - pure black */
+    /* Main app background - pure black with neon grid */
     .stApp {
         max-width: 100%;
         background-color: #000000;
         color: #00ff41;
+        background-image: 
+            linear-gradient(rgba(157, 0, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(157, 0, 255, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        background-position: -1px -1px;
     }
     
     /* Sidebar styling */
@@ -284,6 +290,22 @@ st.markdown("""
     ::-webkit-scrollbar-thumb:hover {
         background: linear-gradient(180deg, #ff00ff, #ff00ff);
         box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+    }
+    
+    /* Footer styling */
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(10, 10, 10, 0.9);
+        border-top: 1px solid #9d00ff;
+        padding: 10px 20px;
+        text-align: center;
+        color: #00ff41;
+        font-size: 12px;
+        z-index: 999;
+        box-shadow: 0 -2px 10px rgba(157, 0, 255, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -922,6 +944,13 @@ def main():
     
     with tab2:
         render_lab_tab()
+    
+    # Footer credit
+    st.markdown("""
+    <div class="footer">
+        dev by iambandobandz under massive magnetics
+    </div>
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
