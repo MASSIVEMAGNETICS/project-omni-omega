@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PSM Event Schema",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Unique event identifier (auto-generated)"
+    },
+    "type": {
+      "type": "string",
+      "description": "Event type (e.g., 'inference', 'training', 'user_action')"
+    },
+    "timestamp": {
+      "type": "number",
+      "description": "Event timestamp (auto-generated)"
+    },
+    "data": {
+      "type": "object",
+      "description": "Event data payload",
+      "additionalProperties": true
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Related entity IDs"
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Source of the event"
+        },
+        "sha256": {
+          "type": "string",
+          "description": "SHA-256 hash for verification"
+        }
+      }
+    }
+  }
+}

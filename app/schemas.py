@@ -13,6 +13,8 @@ class AdapterType(str, Enum):
     VLLM_REMOTE = "vllm_remote"
     ONNX_RUNTIME = "onnx_runtime"
     VICTOR_CUSTOM = "victor_custom"
+    AAI_PSM = "aai_psm"
+    INDUCTION = "induction"
 
 
 class PromptTemplate(BaseModel):

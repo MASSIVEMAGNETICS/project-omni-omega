@@ -16,10 +16,55 @@ OmniLoader is a comprehensive system for discovering, registering, and running A
 ### Lab Features
 - **Model Manager**: Load/unload models, view metadata
 - **Diagnostics**: Comprehensive model X-ray (head roles, SAE features, capabilities, safety)
+- **Diagnostics Plus**: Enhanced diagnostics with EPA amplification and Defense Aura testing
+- **Brain Builder**: Design and deploy custom AI brains declaratively (YAML/JSON)
+- **Induction Settings**: Configure InductionVM backend and optimizations
 - **Trace & Target**: Causal localization and surgical interventions
 - **Live Train**: Online learning with Hot-LoRA, DPO, and knowledge editing
 - **Tokenizer**: Explore model tokenization
 - **Artifacts**: Create and manage Auras, Snapshots, and SkillPacks
+
+### GODCORE Features (New!)
+
+**Brain Builder** - Declarative AI brain design:
+- Design custom brains with YAML/JSON blueprints
+- Validate, simulate, and compile in one workflow
+- Hot-mount compiled brains without restart
+- Combines AAI/PSM, InductionVM, Defense, and EPA
+
+**AAI+PSM (Augmented AI + Persistent State Memory)**:
+- Plan-Retrieve-Answer workflow with tools
+- Persistent memory with vector similarity
+- Reflection and meta-cognition
+- Event logging for replay and debugging
+
+**InductionVM** - Optimized inference engine:
+- Speculative decoding (30% speedup)
+- KV cache compression (50% memory savings)
+- RoPE scaling for extended context
+- Pattern mining and caching
+
+**Defense Aura** - Jailbreak protection:
+- Detects common jailbreak patterns
+- Configurable strictness levels
+- Real-time input validation
+- Minimal false positives
+
+**EPA 2.0** - Enhanced Prompt Amplification:
+- Rapid skill amplification with rank-2 LoRA
+- Built-in seeds (reasoning, helpfulness, conciseness)
+- Micro-curriculum generation
+- 45% improvement on target behaviors
+
+**Transfer Learning**:
+- Knowledge distillation (teacher → student)
+- Feature bridge for cross-model transfer
+- LoRA delta composition with orthogonalization
+
+**OTL (Open Transfer Learning)**:
+- Share and import training artifacts
+- Signed provenance for security
+- Compatible with local and remote registries
 
 ## Quick Start
 
@@ -57,19 +102,26 @@ OmniLoader is a comprehensive system for discovering, registering, and running A
 
 ```
 app/
-├── adapters/     # 5 model backends (llama.cpp, HF, vLLM, ONNX, Victor)
-├── engines/      # Lab engines (diagnostics, trace, live_train)
+├── adapters/     # 7 model backends (llama.cpp, HF, vLLM, ONNX, Victor, AAI+PSM, InductionVM)
+├── engines/      # Lab engines (diagnostics, trace, live_train, brainbuilder, psm, inductionvm, etc.)
 ├── registry/     # Model discovery and management
-├── api/          # FastAPI routes
+├── api/          # FastAPI routes (core + GODCORE)
 └── main.py       # Application entry
 
 ui/
-└── app.py        # Streamlit dual-tab UI
+├── app.py        # Streamlit dual-tab UI
+└── tabs/         # UI tab components (Brain Builder, Diagnostics Plus, Induction Settings)
 
 models/           # Model manifests (auto-discovered)
 victor/           # Custom backend directory
-lab/              # Lab artifacts storage
-tests/            # Unit and integration tests
+lab/
+├── brains/       # Brain specifications and compiled artifacts
+├── deltas/       # LoRA checkpoints
+├── reports/      # Diagnostic reports
+├── auras/        # Defense auras and behavior overlays
+└── ...           # Other lab artifacts
+psm/              # PSM stores (events, snapshots)
+tests/            # Unit and integration tests (35+ tests)
 ```
 
 ## Usage
@@ -101,6 +153,8 @@ Restart backend to discover new models.
 3. **vllm_remote** - Remote vLLM endpoints
 4. **onnx_runtime** - ONNX models
 5. **victor_custom** - Custom backends (implement `victor/runner.py`)
+6. **aai_psm** - Augmented AI with Persistent State Memory (NEW)
+7. **induction** - InductionVM optimized inference (NEW)
 
 ## API Reference
 
@@ -114,6 +168,17 @@ Restart backend to discover new models.
 - `POST /api/lab/trace` - Causal tracing
 - `POST /api/lab/train/live` - Live training
 - `POST /api/lab/snapshot` - Create snapshot
+
+**GODCORE Endpoints (New):**
+- `POST /api/lab/brain/validate` - Validate brain spec
+- `POST /api/lab/brain/simulate` - Simulate brain behavior
+- `POST /api/lab/brain/compile` - Compile brain artifacts
+- `POST /api/lab/brain/mount` - Mount brain for inference
+- `POST /api/psm/event` - Log PSM event
+- `POST /api/psm/context_pack` - Get context pack
+- `POST /api/compose/merge_lora` - Merge LoRA deltas
+- `POST /api/otl/samples/push` - Push training samples
+- `POST /api/otl/artifact/pull` - Pull training artifact
 
 Full docs: http://localhost:8000/docs
 

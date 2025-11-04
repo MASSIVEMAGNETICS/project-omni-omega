@@ -14,6 +14,8 @@ from app.adapters.hf_transformers_adapter import HFTransformersAdapter
 from app.adapters.vllm_remote_adapter import VLLMRemoteAdapter
 from app.adapters.onnx_runtime_adapter import ONNXRuntimeAdapter
 from app.adapters.victor_custom_adapter import VictorCustomAdapter
+from app.adapters.aai_psm_adapter import AAIPSMAdapter
+from app.adapters.induction_adapter import InductionAdapter
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +31,8 @@ class ModelRegistry:
         AdapterType.VLLM_REMOTE: VLLMRemoteAdapter,
         AdapterType.ONNX_RUNTIME: ONNXRuntimeAdapter,
         AdapterType.VICTOR_CUSTOM: VictorCustomAdapter,
+        AdapterType.AAI_PSM: AAIPSMAdapter,
+        AdapterType.INDUCTION: InductionAdapter,
     }
     
     def __init__(self, models_dir: str, victor_dir: str):

@@ -9,6 +9,7 @@ from app.config import settings
 from app.registry import ModelRegistry
 from app.engines import DiagnosticsEngine, TraceTargetEngine, LiveTrainEngine
 from app.api import routes, lab_routes
+from app.api import brainbuilder, otl, psm, compose
 
 # Configure logging
 logging.basicConfig(
@@ -54,6 +55,10 @@ lab_routes.set_engines(registry, diagnostics_engine, trace_target_engine, live_t
 # Include routers
 app.include_router(routes.router, prefix="/api", tags=["core"])
 app.include_router(lab_routes.router, prefix="/api", tags=["lab"])
+app.include_router(brainbuilder.router, prefix="/api/lab/brain", tags=["brain"])
+app.include_router(otl.router, prefix="/api/otl", tags=["otl"])
+app.include_router(psm.router, prefix="/api/psm", tags=["psm"])
+app.include_router(compose.router, prefix="/api/compose", tags=["compose"])
 
 
 @app.on_event("startup")
