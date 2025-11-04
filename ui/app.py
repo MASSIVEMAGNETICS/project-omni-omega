@@ -497,26 +497,26 @@ def render_lab_tab():
     with lab_tabs[2]:
         # Import and render Diagnostics Plus
         try:
-            from ui.tabs.diagnostics_plus import render_diagnostics_plus
+            from tabs.diagnostics_plus import render_diagnostics_plus
             render_diagnostics_plus()
-        except ImportError:
-            st.error("Diagnostics Plus tab not available")
+        except ImportError as e:
+            st.error(f"Diagnostics Plus tab not available: {e}")
     
     with lab_tabs[3]:
         # Import and render Brain Builder
         try:
-            from ui.tabs.brain_builder import render_brain_builder
+            from tabs.brain_builder import render_brain_builder
             render_brain_builder()
-        except ImportError:
-            st.error("Brain Builder tab not available")
+        except ImportError as e:
+            st.error(f"Brain Builder tab not available: {e}")
     
     with lab_tabs[4]:
         # Import and render Induction Settings
         try:
-            from ui.tabs.settings_induction import render_induction_settings
+            from tabs.settings_induction import render_induction_settings
             render_induction_settings()
-        except ImportError:
-            st.error("Induction Settings tab not available")
+        except ImportError as e:
+            st.error(f"Induction Settings tab not available: {e}")
     
     with lab_tabs[5]:
         render_trace_target()
