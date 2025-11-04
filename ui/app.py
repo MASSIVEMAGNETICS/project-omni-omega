@@ -18,22 +18,272 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS - Dark Neon Cyberpunk Theme
 st.markdown("""
 <style>
+    /* Main app background - pure black */
     .stApp {
         max-width: 100%;
+        background-color: #000000;
+        color: #00ff41;
     }
+    
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background-color: #0a0a0a;
+        border-right: 2px solid #ff00ff;
+    }
+    
+    [data-testid="stSidebar"] * {
+        color: #00ff41 !important;
+    }
+    
+    /* Headers */
+    h1, h2, h3, h4, h5, h6 {
+        color: #ff00ff !important;
+        text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+    }
+    
+    /* Chat messages */
     .chat-message {
         padding: 1rem;
         border-radius: 0.5rem;
         margin-bottom: 1rem;
+        border: 1px solid;
     }
     .user-message {
-        background-color: #e3f2fd;
+        background-color: #0a0a14;
+        border-color: #00ff41;
+        color: #00ff41;
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
     }
     .assistant-message {
-        background-color: #f5f5f5;
+        background-color: #140a14;
+        border-color: #ff00ff;
+        color: #ff00ff;
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        background-color: #1a001a;
+        color: #ff00ff;
+        border: 2px solid #ff00ff;
+        border-radius: 5px;
+        text-shadow: 0 0 5px #ff00ff;
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        background-color: #2a002a;
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        transform: scale(1.02);
+    }
+    
+    /* Input fields */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea,
+    .stNumberInput > div > div > input {
+        background-color: #0a0a0a;
+        color: #00ff41;
+        border: 2px solid #9d00ff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus,
+    .stNumberInput > div > div > input:focus {
+        border-color: #ff00ff;
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+    }
+    
+    /* Select boxes */
+    .stSelectbox > div > div > div,
+    .stMultiSelect > div > div > div {
+        background-color: #0a0a0a;
+        color: #00ff41;
+        border: 2px solid #9d00ff;
+        box-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
+    }
+    
+    /* Sliders */
+    .stSlider > div > div > div > div {
+        background-color: #9d00ff;
+    }
+    
+    .stSlider > div > div > div > div > div {
+        background-color: #ff00ff;
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+    }
+    
+    /* Checkboxes and radio buttons */
+    .stCheckbox > label > div,
+    .stRadio > label > div {
+        color: #00ff41 !important;
+    }
+    
+    /* Metrics */
+    [data-testid="stMetricValue"] {
+        color: #ff00ff !important;
+        text-shadow: 0 0 10px #ff00ff;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #00ff41 !important;
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: #0a0a0a;
+        border-bottom: 2px solid #9d00ff;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        color: #00ff41;
+        background-color: transparent;
+        border: 1px solid #9d00ff;
+        border-radius: 5px 5px 0 0;
+        margin-right: 5px;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: #1a001a;
+        box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #2a002a;
+        color: #ff00ff !important;
+        border-color: #ff00ff;
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.6);
+    }
+    
+    /* Expanders */
+    .streamlit-expanderHeader {
+        background-color: #0a0a0a;
+        color: #ff00ff !important;
+        border: 1px solid #9d00ff;
+        border-radius: 5px;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background-color: #1a001a;
+        box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+    }
+    
+    /* Dividers */
+    hr {
+        border-color: #9d00ff;
+        box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
+    }
+    
+    /* Code blocks */
+    code {
+        background-color: #0a0a0a;
+        color: #00ff41;
+        border: 1px solid #9d00ff;
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+    
+    pre {
+        background-color: #0a0a0a;
+        border: 2px solid #9d00ff;
+        box-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
+    }
+    
+    /* Success, warning, error messages */
+    .stSuccess {
+        background-color: #001a0a;
+        color: #00ff41;
+        border-left: 5px solid #00ff41;
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+    }
+    
+    .stWarning {
+        background-color: #1a1a00;
+        color: #ffff00;
+        border-left: 5px solid #ffff00;
+        box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+    }
+    
+    .stError {
+        background-color: #1a0000;
+        color: #ff0066;
+        border-left: 5px solid #ff0066;
+        box-shadow: 0 0 15px rgba(255, 0, 102, 0.3);
+    }
+    
+    .stInfo {
+        background-color: #00001a;
+        color: #00ffff;
+        border-left: 5px solid #00ffff;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+    
+    /* Spinner */
+    .stSpinner > div {
+        border-top-color: #ff00ff !important;
+        border-right-color: #9d00ff !important;
+        border-bottom-color: #ff00ff !important;
+        border-left-color: #9d00ff !important;
+    }
+    
+    /* General text */
+    p, span, div, label {
+        color: #00ff41;
+    }
+    
+    /* Links */
+    a {
+        color: #ff00ff;
+        text-shadow: 0 0 5px #ff00ff;
+    }
+    
+    a:hover {
+        color: #00ffff;
+        text-shadow: 0 0 10px #00ffff;
+    }
+    
+    /* Dataframe/table styling */
+    .dataframe {
+        background-color: #0a0a0a;
+        color: #00ff41;
+        border: 2px solid #9d00ff;
+    }
+    
+    .dataframe th {
+        background-color: #1a001a;
+        color: #ff00ff;
+        border: 1px solid #9d00ff;
+    }
+    
+    .dataframe td {
+        border: 1px solid #9d00ff;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #0a0a0a;
+        border: 1px solid #9d00ff;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #ff00ff, #9d00ff);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #ff00ff, #ff00ff);
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
     }
 </style>
 """, unsafe_allow_html=True)
