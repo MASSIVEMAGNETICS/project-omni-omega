@@ -497,6 +497,12 @@ def render_lab_tab():
     with lab_tabs[2]:
         # Import and render Diagnostics Plus
         try:
+            import sys
+            import os
+            # Add ui directory to path if not already there
+            ui_dir = os.path.dirname(__file__)
+            if ui_dir not in sys.path:
+                sys.path.insert(0, ui_dir)
             from tabs.diagnostics_plus import render_diagnostics_plus
             render_diagnostics_plus()
         except ImportError as e:
@@ -505,6 +511,11 @@ def render_lab_tab():
     with lab_tabs[3]:
         # Import and render Brain Builder
         try:
+            import sys
+            import os
+            ui_dir = os.path.dirname(__file__)
+            if ui_dir not in sys.path:
+                sys.path.insert(0, ui_dir)
             from tabs.brain_builder import render_brain_builder
             render_brain_builder()
         except ImportError as e:
@@ -513,6 +524,11 @@ def render_lab_tab():
     with lab_tabs[4]:
         # Import and render Induction Settings
         try:
+            import sys
+            import os
+            ui_dir = os.path.dirname(__file__)
+            if ui_dir not in sys.path:
+                sys.path.insert(0, ui_dir)
             from tabs.settings_induction import render_induction_settings
             render_induction_settings()
         except ImportError as e:
