@@ -229,6 +229,9 @@ def render_lab_tab():
     lab_tabs = st.tabs([
         "Model Manager",
         "Diagnostics",
+        "Diagnostics Plus",
+        "Brain Builder",
+        "Induction Settings",
         "Trace & Target",
         "Live Train",
         "Tokenizer",
@@ -242,15 +245,39 @@ def render_lab_tab():
         render_diagnostics()
     
     with lab_tabs[2]:
-        render_trace_target()
+        # Import and render Diagnostics Plus
+        try:
+            from ui.tabs.diagnostics_plus import render_diagnostics_plus
+            render_diagnostics_plus()
+        except ImportError:
+            st.error("Diagnostics Plus tab not available")
     
     with lab_tabs[3]:
-        render_live_train()
+        # Import and render Brain Builder
+        try:
+            from ui.tabs.brain_builder import render_brain_builder
+            render_brain_builder()
+        except ImportError:
+            st.error("Brain Builder tab not available")
     
     with lab_tabs[4]:
-        render_tokenizer()
+        # Import and render Induction Settings
+        try:
+            from ui.tabs.settings_induction import render_induction_settings
+            render_induction_settings()
+        except ImportError:
+            st.error("Induction Settings tab not available")
     
     with lab_tabs[5]:
+        render_trace_target()
+    
+    with lab_tabs[6]:
+        render_live_train()
+    
+    with lab_tabs[7]:
+        render_tokenizer()
+    
+    with lab_tabs[8]:
         render_artifacts()
 
 
