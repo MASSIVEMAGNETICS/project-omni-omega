@@ -33,6 +33,19 @@ class Settings(BaseSettings):
     default_lora_lr: float = 2e-4
     default_lora_max_modules: int = 4
     
+    # InductionVM Configuration
+    induction_backend: str = "auto"  # auto | cpu | directml | vulkan | remote
+    induction_spec_decode_ahead: int = 4
+    induction_draft_model_id: str = "tiny-llama-gguf"
+    induction_kv_compress_mode: str = "int8-per-head"
+    induction_kv_segment_bytes: int = 512
+    induction_rope_mode: str = "yarn"  # yarn | ntk | linear
+    induction_rope_factor: float = 1.3
+    
+    # PSM (Persistent State Memory) Configuration
+    psm_vector_dim: int = 384
+    psm_topk: int = 6
+    
     # DPO/KTO defaults
     default_dpo_pairs: int = 8
     default_dpo_steps: int = 30
