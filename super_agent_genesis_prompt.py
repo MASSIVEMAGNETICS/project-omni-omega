@@ -35,7 +35,7 @@ def _circ_corr(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 def _superpose(vecs: List[np.ndarray]) -> np.ndarray:
     """Superpose multiple vectors (element-wise addition)."""
     if not vecs:
-        return np.zeros_like(vecs[0]) if vecs else np.array([])
+        return np.array([])
     result = np.sum(vecs, axis=0)
     return _unit_norm(result)
 
