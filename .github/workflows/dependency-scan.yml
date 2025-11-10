@@ -14,6 +14,10 @@ on:
 jobs:
   scan-dependencies:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      actions: read
     
     steps:
       - name: Checkout repository
