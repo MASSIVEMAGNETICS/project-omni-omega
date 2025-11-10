@@ -195,6 +195,16 @@ pytest tests/unit/ -v
 pytest tests/ --cov=app
 ```
 
+## Dependency Management
+
+Scan for available package upgrades:
+
+```bash
+python scan_upgrades.py
+```
+
+See [DEPENDENCY_SCANNER.md](DEPENDENCY_SCANNER.md) for detailed documentation on dependency scanning, automated workflows, and upgrade best practices.
+
 ## Configuration
 
 CPU-safe defaults in `app/config.py`:
