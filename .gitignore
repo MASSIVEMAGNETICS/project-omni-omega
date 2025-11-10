@@ -86,6 +86,10 @@ lab/snapshots/*/
 .ipynb_checkpoints/
 *.ipynb
 
+# Super Agent Genesis Prompt outputs
+genesis_prompt.txt
+bloodline_config.json
+
 # OS
 Thumbs.db
 .DS_Store
