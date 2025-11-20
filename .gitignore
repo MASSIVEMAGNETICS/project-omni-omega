@@ -49,6 +49,9 @@ htmlcov/
 *.log
 logs/
 
+# Upgrade scanner reports
+upgrade_report.json
+
 # Environment
 .env
 .env.local
