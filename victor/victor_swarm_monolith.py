@@ -10,9 +10,7 @@ import json
 import time
 import torch
 import threading
-import hashlib
 from datetime import datetime
-from collections import defaultdict
 
 # --- FastAPI + WebSocket Overlay ---
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
