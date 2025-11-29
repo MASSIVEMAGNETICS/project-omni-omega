@@ -93,6 +93,9 @@ lab/snapshots/*/
 genesis_prompt.txt
 bloodline_config.json
 
+# Victor Swarm artifacts
+victor_soul.json
+
 # OS
 Thumbs.db
 .DS_Store
