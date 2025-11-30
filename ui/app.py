@@ -930,14 +930,216 @@ def render_artifacts():
                         st.error(f"Error: {e}")
 
 
+# Check if this is the first run or no models are loaded
+def check_onboarding_needed() -> bool:
+    """Check if onboarding should be shown"""
+    if "onboarding_complete" not in st.session_state:
+        st.session_state.onboarding_complete = False
+    
+    # Check if there are any models
+    try:
+        response = requests.get(f"{API_BASE}/models", timeout=5)
+        if response.status_code == 200:
+            models = response.json().get("models", [])
+            # If there are loaded models, skip onboarding
+            if any(m.get("loaded") for m in models):
+                return False
+    except:
+        pass
+    
+    return not st.session_state.onboarding_complete
+
+
+def render_welcome_screen():
+    """Render the welcome/onboarding screen"""
+    st.markdown("""
+    <div style="text-align: center; padding: 2rem 0;">
+        <h1 style="color: #ff00ff; text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff; font-size: 3rem;">
+            🤖 Welcome to OmniLoader Studio
+        </h1>
+        <p style="color: #00ff41; font-size: 1.2rem; margin-top: 1rem;">
+            Production-grade local-first AI model manager
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.divider()
+    
+    # Feature highlights
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div style="text-align: center; padding: 1rem; border: 1px solid #9d00ff; border-radius: 10px; background: rgba(157, 0, 255, 0.1);">
+            <h3 style="color: #ff00ff;">💬 Chat</h3>
+            <p style="color: #00ff41; font-size: 0.9rem;">
+                Interactive chat with any loaded AI model. 
+                Stream responses in real-time.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="text-align: center; padding: 1rem; border: 1px solid #9d00ff; border-radius: 10px; background: rgba(157, 0, 255, 0.1);">
+            <h3 style="color: #ff00ff;">🔬 Lab</h3>
+            <p style="color: #00ff41; font-size: 0.9rem;">
+                Advanced tools: diagnostics, tracing, 
+                live training, and brain building.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div style="text-align: center; padding: 1rem; border: 1px solid #9d00ff; border-radius: 10px; background: rgba(157, 0, 255, 0.1);">
+            <h3 style="color: #ff00ff;">⚡ Local-First</h3>
+            <p style="color: #00ff41; font-size: 0.9rem;">
+                Run entirely on your machine.
+                Your data stays private.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.divider()
+    
+    # Quick start guide
+    st.subheader("🚀 Quick Start Guide")
+    
+    with st.expander("Step 1: Check Backend Status", expanded=True):
+        try:
+            response = requests.get(f"{API_BASE.replace('/api', '')}/health", timeout=5)
+            if response.status_code == 200:
+                st.success("✅ Backend is running and healthy!")
+            else:
+                st.error("❌ Backend responded with an error")
+        except requests.exceptions.ConnectionError:
+            st.error("❌ Backend is not running. Please start it with `run_backend.bat` or `./run_omni.sh`")
+        except Exception as e:
+            st.warning(f"⚠️ Could not check backend status: {e}")
+    
+    with st.expander("Step 2: Available Models", expanded=True):
+        try:
+            response = requests.get(f"{API_BASE}/models", timeout=5)
+            if response.status_code == 200:
+                models = response.json().get("models", [])
+                if models:
+                    st.success(f"✅ Found {len(models)} model(s)")
+                    for m in models:
+                        status = "✅ Loaded" if m.get("loaded") else "⭕ Not Loaded"
+                        st.write(f"  - **{m['name']}** ({m['adapter']}) - {status}")
+                else:
+                    st.warning("⚠️ No models found. Add model manifests to the `./models` directory.")
+        except Exception as e:
+            st.error(f"Could not fetch models: {e}")
+    
+    with st.expander("Step 3: Load Your First Model"):
+        st.markdown("""
+        1. **Add a model manifest** to `./models/your-model/manifest.json`
+        2. **Restart the backend** to discover the model
+        3. **Go to Lab > Model Manager** to load it
+        4. **Start chatting** in the Chat tab!
+        
+        **Supported Adapters:**
+        - `llama_cpp` - GGUF models (recommended for CPU)
+        - `hf_transformers` - HuggingFace models
+        - `vllm_remote` - Remote vLLM endpoints
+        - `onnx_runtime` - ONNX models
+        - `victor_custom` - Custom backends
+        - `aai_psm` - Augmented AI with memory
+        - `induction` - Optimized inference
+        """)
+    
+    with st.expander("Step 4: Explore Lab Features"):
+        st.markdown("""
+        The Lab tab contains powerful tools:
+        
+        - **Model Manager** - Load/unload models
+        - **Diagnostics** - Analyze model capabilities
+        - **Diagnostics Plus** - EPA amplification & Defense Aura
+        - **Brain Builder** - Design custom AI brains
+        - **Induction Settings** - Optimize inference
+        - **Trace & Target** - Causal localization
+        - **Live Train** - Online learning
+        - **Tokenizer** - Explore tokenization
+        - **Artifacts** - Manage Auras & SkillPacks
+        """)
+    
+    st.divider()
+    
+    # Continue button
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🚀 Enter OmniLoader Studio", type="primary", use_container_width=True):
+            st.session_state.onboarding_complete = True
+            st.rerun()
+
+
+def render_status_bar():
+    """Render a status bar showing system status"""
+    # Check backend and models
+    backend_ok = False
+    model_count = 0
+    loaded_count = 0
+    
+    try:
+        response = requests.get(f"{API_BASE.replace('/api', '')}/health", timeout=2)
+        backend_ok = response.status_code == 200
+        
+        response = requests.get(f"{API_BASE}/models", timeout=2)
+        if response.status_code == 200:
+            models = response.json().get("models", [])
+            model_count = len(models)
+            loaded_count = sum(1 for m in models if m.get("loaded"))
+    except:
+        pass
+    
+    # Status bar HTML
+    backend_status = "🟢 Online" if backend_ok else "🔴 Offline"
+    backend_color = "#00ff41" if backend_ok else "#ff0066"
+    
+    st.markdown(f"""
+    <div style="
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: rgba(10, 10, 10, 0.8);
+        border: 1px solid #9d00ff;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+    ">
+        <span style="color: {backend_color};">Backend: {backend_status}</span>
+        <span style="color: #00ff41;">Models: {model_count} total, {loaded_count} loaded</span>
+        <span style="color: #9d00ff;">v1.0.0</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+
 # Main app
 def main():
-    # Header
-    st.markdown("# 🤖 OmniLoader")
-    st.markdown("*Production-grade local-first AI model manager*")
+    # Check if onboarding is needed
+    if check_onboarding_needed():
+        render_welcome_screen()
+        return
+    
+    # Header with branding
+    st.markdown("""
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+        <span style="font-size: 2.5rem;">🤖</span>
+        <div>
+            <h1 style="margin: 0; padding: 0; color: #ff00ff; text-shadow: 0 0 10px #ff00ff;">OmniLoader</h1>
+            <p style="margin: 0; padding: 0; color: #00ff41; font-size: 0.9rem;">Studio</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Status bar
+    render_status_bar()
     
     # Main tabs
-    tab1, tab2 = st.tabs(["💬 Chat", "🔬 Lab"])
+    tab1, tab2, tab3 = st.tabs(["💬 Chat", "🔬 Lab", "ℹ️ About"])
     
     with tab1:
         render_chat_tab()
@@ -945,12 +1147,86 @@ def main():
     with tab2:
         render_lab_tab()
     
+    with tab3:
+        render_about_tab()
+    
     # Footer credit
     st.markdown("""
     <div class="footer">
-        dev by iambandobandz under massive magnetics
+        dev by iambandobandz under massive magnetics | OmniLoader Studio v1.0.0
     </div>
     """, unsafe_allow_html=True)
+
+
+def render_about_tab():
+    """Render the About tab with documentation and links"""
+    st.header("ℹ️ About OmniLoader Studio")
+    
+    st.markdown("""
+    **OmniLoader** is a production-grade, local-first AI model manager with a dual-tab interface 
+    (Chat | Lab) for running ANY text-generation model locally.
+    """)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("🎯 Features")
+        st.markdown("""
+        **Core:**
+        - Universal model support (7 adapters)
+        - Streaming token generation
+        - CPU-optimized defaults
+        
+        **Lab:**
+        - Comprehensive diagnostics
+        - Causal tracing & interventions
+        - Live training (Hot-LoRA, DPO, ROME)
+        - Brain Builder for custom AI systems
+        
+        **GODCORE:**
+        - AAI+PSM (Augmented AI + Memory)
+        - InductionVM (optimized inference)
+        - Defense Aura (jailbreak protection)
+        - EPA 2.0 (behavior amplification)
+        """)
+    
+    with col2:
+        st.subheader("🔗 Links")
+        st.markdown("""
+        - [📖 Documentation](http://localhost:8000/docs)
+        - [🐙 GitHub Repository](https://github.com/MASSIVEMAGNETICS/project-omni-omega)
+        - [🐛 Report Issues](https://github.com/MASSIVEMAGNETICS/project-omni-omega/issues)
+        """)
+        
+        st.subheader("⚙️ System Info")
+        try:
+            response = requests.get(f"{API_BASE.replace('/api', '')}", timeout=5)
+            if response.status_code == 200:
+                info = response.json()
+                st.write(f"**API Version:** {info.get('version', 'Unknown')}")
+                st.write(f"**Status:** {info.get('status', 'Unknown')}")
+        except:
+            st.write("Could not fetch system info")
+        
+        st.write(f"**API URL:** `{API_BASE}`")
+    
+    st.divider()
+    
+    st.subheader("📋 Keyboard Shortcuts")
+    st.markdown("""
+    | Action | Shortcut |
+    |--------|----------|
+    | Send message | `Enter` |
+    | New line in input | `Shift+Enter` |
+    | Refresh page | `F5` |
+    """)
+    
+    st.divider()
+    
+    # Show welcome button
+    if st.button("🏠 Show Welcome Screen"):
+        st.session_state.onboarding_complete = False
+        st.rerun()
 
 
 if __name__ == "__main__":

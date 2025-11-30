@@ -1,10 +1,19 @@
-# OmniLoader
+# OmniLoader Studio
 
 **Production-grade local-first AI model manager with dual-tab UI (Chat | Lab)**
 
-OmniLoader is a comprehensive system for discovering, registering, and running ANY text-generation model locally. It features a dual-tab interface (Chat for daily use, Lab for advanced operations), supports multiple model backends, and includes advanced features like diagnostics, causal tracing, and live training.
+OmniLoader Studio is a comprehensive end-to-end software for discovering, registering, and running ANY text-generation model locally. It features a polished dual-tab interface (Chat for daily use, Lab for advanced operations), supports 7 model backends, and includes advanced features like diagnostics, causal tracing, and live training. Optimized for both **Web** and **Windows 10** deployment.
+
+![OmniLoader Studio](https://img.shields.io/badge/Status-Production%20Ready-brightgreen) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![Platform](https://img.shields.io/badge/Platform-Windows%20|%20Linux%20|%20macOS-lightgrey)
 
 ## Features
+
+### Studio Features
+- **One-Click Launch**: Single launcher script for both backend and UI
+- **Welcome Onboarding**: Guided setup for new users
+- **Real-time Status Bar**: Monitor backend and model status
+- **Cross-Platform**: Windows batch scripts and Unix shell scripts
+- **Production Ready**: Comprehensive error handling and logging
 
 ### Core Features
 - **Universal Model Support**: Works with GGUF/llama.cpp, HuggingFace Transformers, vLLM remote endpoints, ONNX Runtime, and custom backends
@@ -24,7 +33,7 @@ OmniLoader is a comprehensive system for discovering, registering, and running A
 - **Tokenizer**: Explore model tokenization
 - **Artifacts**: Create and manage Auras, Snapshots, and SkillPacks
 
-### GODCORE Features (New!)
+### GODCORE Features (Advanced)
 
 **Brain Builder** - Declarative AI brain design:
 - Design custom brains with YAML/JSON blueprints
@@ -70,7 +79,7 @@ OmniLoader is a comprehensive system for discovering, registering, and running A
 
 ### Prerequisites
 - Python 3.8+
-- Windows 10 or later
+- Windows 10/11 or Linux/macOS
 - 16GB RAM recommended
 
 ### Installation
@@ -79,24 +88,44 @@ OmniLoader is a comprehensive system for discovering, registering, and running A
    ```bash
    git clone https://github.com/MASSIVEMAGNETICS/project-omni-omega.git
    cd project-omni-omega
-   python -m venv venv
-   venv\Scripts\activate
-   pip install -r requirements.txt
    ```
 
-2. **Start the backend**
+2. **Launch OmniLoader Studio**
+
+   **Windows (Recommended):**
    ```bash
-   run_backend.bat
+   OmniLoader.bat
+   ```
+   
+   **Linux/macOS:**
+   ```bash
+   ./run_omni.sh
    ```
 
-3. **Start the UI** (new terminal)
+   The launcher will:
+   - Create a virtual environment
+   - Install dependencies
+   - Start the backend API
+   - Start the Studio UI
+   - Open your browser automatically
+
+3. **Alternative: Manual Start**
+   
+   Terminal 1 - Backend:
    ```bash
-   run_streamlit.bat
+   run_backend.bat   # Windows
+   # or
+   ./run_omni.sh     # Linux/macOS
+   ```
+   
+   Terminal 2 - UI:
+   ```bash
+   run_streamlit.bat # Windows
    ```
 
 4. **Access**
-   - UI: http://localhost:8501
-   - API: http://localhost:8000/docs
+   - Studio UI: http://localhost:8501
+   - API Documentation: http://localhost:8000/docs
 
 ## Architecture
 
