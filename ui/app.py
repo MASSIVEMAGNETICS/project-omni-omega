@@ -8,8 +8,9 @@ import json
 from typing import Dict, Any, List
 import time
 
-# API Configuration
+# Configuration
 API_BASE = "http://localhost:8000/api"
+STUDIO_VERSION = "1.0.0"
 
 # Page config
 st.set_page_config(
@@ -1014,7 +1015,7 @@ def render_welcome_screen():
             else:
                 st.error("❌ Backend responded with an error")
         except requests.exceptions.ConnectionError:
-            st.error("❌ Backend is not running. Please start it with `run_backend.bat` or `./run_omni.sh`")
+            st.error("❌ Backend is not running. Please start it with `OmniLoader.bat` (Windows) or `./run_omni.sh` (Linux/macOS)")
         except Exception as e:
             st.warning(f"⚠️ Could not check backend status: {e}")
     
@@ -1091,7 +1092,7 @@ def render_status_bar():
             models = response.json().get("models", [])
             model_count = len(models)
             loaded_count = sum(1 for m in models if m.get("loaded"))
-    except:
+    except Exception:
         pass
     
     # Status bar HTML
@@ -1112,7 +1113,7 @@ def render_status_bar():
     ">
         <span style="color: {backend_color};">Backend: {backend_status}</span>
         <span style="color: #00ff41;">Models: {model_count} total, {loaded_count} loaded</span>
-        <span style="color: #9d00ff;">v1.0.0</span>
+        <span style="color: #9d00ff;">v{STUDIO_VERSION}</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1151,9 +1152,9 @@ def main():
         render_about_tab()
     
     # Footer credit
-    st.markdown("""
+    st.markdown(f"""
     <div class="footer">
-        dev by iambandobandz under massive magnetics | OmniLoader Studio v1.0.0
+        dev by iambandobandz under massive magnetics | OmniLoader Studio v{STUDIO_VERSION}
     </div>
     """, unsafe_allow_html=True)
 

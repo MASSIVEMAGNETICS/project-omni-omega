@@ -37,7 +37,7 @@ print_header() {
 
 # Check command exists
 check_command() {
-    if ! command -v $1 &> /dev/null; then
+    if ! command -v "$1" &> /dev/null; then
         echo -e "${RED}ERROR: $1 is not installed${NC}"
         return 1
     fi
