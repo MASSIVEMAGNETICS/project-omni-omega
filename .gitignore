@@ -96,6 +96,13 @@ bloodline_config.json
 # Victor Swarm artifacts
 victor_soul.json
 
+# OmniLoader Studio PID files
+.omniloader_backend.pid
+.omniloader_frontend.pid
+
+# Studio configuration (local overrides)
+studio.env
+
 # OS
 Thumbs.db
 .DS_Store
