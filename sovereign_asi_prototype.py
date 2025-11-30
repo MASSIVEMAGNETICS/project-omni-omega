@@ -34,7 +34,8 @@ def _circ_conv(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return np.fft.irfft(fa * fb, n=a.shape[0]).astype(np.float32)
 
 def _superpose(vecs: List[np.ndarray]) -> np.ndarray:
-    if not vecs: return np.zeros_like(vecs[0]) if vecs else None
+    if not vecs:
+        return None
     s = np.sum(np.stack(vecs, axis=0), axis=0).astype(np.float32)
     return _unit_norm(s)
 
