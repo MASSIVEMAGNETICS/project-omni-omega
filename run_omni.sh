@@ -196,8 +196,8 @@ stop_services() {
     fi
     
     # Also try to kill by port
-    lsof -ti:$BACKEND_PORT | xargs -r kill 2>/dev/null || true
-    lsof -ti:$FRONTEND_PORT | xargs -r kill 2>/dev/null || true
+    lsof -ti:$BACKEND_PORT 2>/dev/null | while read pid; do kill "$pid" 2>/dev/null || true; done
+    lsof -ti:$FRONTEND_PORT 2>/dev/null | while read pid; do kill "$pid" 2>/dev/null || true; done
     
     echo -e "${GREEN}Services stopped${NC}"
 }

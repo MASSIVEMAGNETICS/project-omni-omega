@@ -99,6 +99,8 @@ Write-Host ""
 
 # Start backend
 Write-Host "Starting backend..." -ForegroundColor Cyan
+# Note: Using -NoNewWindow to keep processes in same console for easier management
+# For debugging, you can remove -NoNewWindow to see process output in separate windows
 $script:BackendProcess = Start-Process -FilePath "python" -ArgumentList "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", $BACKEND_PORT -NoNewWindow -PassThru
 Write-Host "✓ Backend started (PID: $($script:BackendProcess.Id))" -ForegroundColor Green
 
@@ -129,6 +131,7 @@ Write-Host ""
 
 # Start frontend
 Write-Host "Starting Studio UI..." -ForegroundColor Cyan
+# Note: Using -NoNewWindow to keep processes in same console for easier management
 $script:FrontendProcess = Start-Process -FilePath "python" -ArgumentList "-m", "streamlit", "run", "ui/app.py", "--server.port", $FRONTEND_PORT, "--server.address", "0.0.0.0", "--server.headless", "true" -NoNewWindow -PassThru
 Write-Host "✓ Studio UI started (PID: $($script:FrontendProcess.Id))" -ForegroundColor Green
 Write-Host ""
