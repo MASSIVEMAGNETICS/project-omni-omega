@@ -529,12 +529,8 @@ class InstallerGUI:
             # Upgrade pip
             self._log("Upgrading pip...", "info")
             try:
-                if isinstance(pip_path, list):
-                    subprocess.run(pip_path + ["install", "--upgrade", "pip"], 
-                                   check=True, capture_output=True)
-                else:
-                    subprocess.run([pip_path, "install", "--upgrade", "pip"], 
-                                   check=True, capture_output=True)
+                cmd = self._get_pip_command(pip_path, ["install", "--upgrade", "pip"])
+                subprocess.run(cmd, check=True, capture_output=True)
                 self._log("✓ pip upgraded", "success")
             except subprocess.CalledProcessError:
                 self._log("⚠ pip upgrade failed, continuing...", "warning")
@@ -546,10 +542,7 @@ class InstallerGUI:
             if os.path.exists(requirements_file):
                 self._log("Installing from requirements.txt...", "info")
                 try:
-                    if isinstance(pip_path, list):
-                        cmd = pip_path + ["install", "-r", requirements_file]
-                    else:
-                        cmd = [pip_path, "install", "-r", requirements_file]
+                    cmd = self._get_pip_command(pip_path, ["install", "-r", requirements_file])
                     
                     process = subprocess.Popen(
                         cmd,
@@ -590,20 +583,7 @@ class InstallerGUI:
             validate_script = os.path.join(install_dir, "validate_install.py")
             if os.path.exists(validate_script):
                 try:
-                    if isinstance(python_path, str):
-                        result = subprocess.run(
-                            [python_path, validate_script],
-                            capture_output=True,
-                            text=True,
-                            cwd=install_dir
-                        )
-                    else:
-                        result = subprocess.run(
-                            [sys.executable, validate_script],
-                            capture_output=True,
-                            text=True,
-                            cwd=install_dir
-                        )
+                    result = self._run_python_script(python_path, validate_script, cwd=install_dir)
                     if result.returncode == 0:
                         self._log("✓ Installation validated", "success")
                     else:
@@ -654,33 +634,62 @@ class InstallerGUI:
         except Exception as e:
             self._log(f"✗ Installation failed: {e}", "error")
             self._installation_failed(str(e))
+    
+    def _get_pip_command(self, pip_path, args):
+        """Build pip command with proper path handling."""
+        if isinstance(pip_path, list):
+            return pip_path + args
+        return [pip_path] + args
+    
+    def _run_python_script(self, python_path, script_path, cwd=None):
+        """Run a Python script with proper executable path."""
+        if isinstance(python_path, str):
+            cmd = [python_path, script_path]
+        else:
+            cmd = [sys.executable, script_path]
+        return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
+    
+    def _escape_powershell_path(self, path):
+        """Escape special characters in paths for PowerShell."""
+        # Replace single quotes with escaped single quotes
+        return path.replace("'", "''").replace("`", "``").replace("$", "`$")
+    
+    def _create_windows_shortcut(self, shortcut_path, target_path, working_dir, description):
+        """Create a Windows shortcut using PowerShell with proper path escaping."""
+        escaped_shortcut = self._escape_powershell_path(shortcut_path)
+        escaped_target = self._escape_powershell_path(target_path)
+        escaped_workdir = self._escape_powershell_path(working_dir)
+        escaped_desc = self._escape_powershell_path(description)
+        
+        ps_script = f'''
+        $WshShell = New-Object -ComObject WScript.Shell
+        $Shortcut = $WshShell.CreateShortcut('{escaped_shortcut}')
+        $Shortcut.TargetPath = '{escaped_target}'
+        $Shortcut.WorkingDirectory = '{escaped_workdir}'
+        $Shortcut.Description = '{escaped_desc}'
+        $Shortcut.Save()
+        '''
+        
+        subprocess.run(
+            ["powershell", "-Command", ps_script],
+            capture_output=True,
+            check=False
+        )
+        return os.path.exists(shortcut_path)
             
     def _create_windows_shortcuts(self, install_dir):
         """Create Windows shortcuts for the application."""
+        description = "OmniLoader Studio - Production-grade local-first AI model manager"
+        target = os.path.join(install_dir, "OmniLoader.bat")
+        
         try:
             # Desktop shortcut
             if self.create_desktop_shortcut.get():
                 desktop = os.path.join(os.environ.get("USERPROFILE", ""), "Desktop")
                 shortcut_path = os.path.join(desktop, "OmniLoader Studio.lnk")
-                target = os.path.join(install_dir, "OmniLoader.bat")
                 
-                ps_script = f'''
-                $WshShell = New-Object -ComObject WScript.Shell
-                $Shortcut = $WshShell.CreateShortcut("{shortcut_path}")
-                $Shortcut.TargetPath = "{target}"
-                $Shortcut.WorkingDirectory = "{install_dir}"
-                $Shortcut.Description = "OmniLoader Studio - Production-grade local-first AI model manager"
-                $Shortcut.Save()
-                '''
-                
-                subprocess.run(
-                    ["powershell", "-Command", ps_script],
-                    capture_output=True,
-                    check=False
-                )
-                
-                if os.path.exists(shortcut_path):
-                    self._log(f"✓ Desktop shortcut created", "success")
+                if self._create_windows_shortcut(shortcut_path, target, install_dir, description):
+                    self._log("✓ Desktop shortcut created", "success")
                 else:
                     self._log("⚠ Could not create desktop shortcut", "warning")
                     
@@ -694,25 +703,9 @@ class InstallerGUI:
                 os.makedirs(omni_folder, exist_ok=True)
                 
                 shortcut_path = os.path.join(omni_folder, "OmniLoader Studio.lnk")
-                target = os.path.join(install_dir, "OmniLoader.bat")
                 
-                ps_script = f'''
-                $WshShell = New-Object -ComObject WScript.Shell
-                $Shortcut = $WshShell.CreateShortcut("{shortcut_path}")
-                $Shortcut.TargetPath = "{target}"
-                $Shortcut.WorkingDirectory = "{install_dir}"
-                $Shortcut.Description = "OmniLoader Studio - Production-grade local-first AI model manager"
-                $Shortcut.Save()
-                '''
-                
-                subprocess.run(
-                    ["powershell", "-Command", ps_script],
-                    capture_output=True,
-                    check=False
-                )
-                
-                if os.path.exists(shortcut_path):
-                    self._log(f"✓ Start Menu shortcut created", "success")
+                if self._create_windows_shortcut(shortcut_path, target, install_dir, description):
+                    self._log("✓ Start Menu shortcut created", "success")
                 else:
                     self._log("⚠ Could not create Start Menu shortcut", "warning")
                     
@@ -788,14 +781,6 @@ class InstallerGUI:
 def main():
     """Main entry point."""
     root = tk.Tk()
-    
-    # Set icon if available
-    try:
-        # Try to set a custom icon (if available)
-        pass
-    except Exception:
-        pass
-        
     app = InstallerGUI(root)
     
     # Center window on screen
