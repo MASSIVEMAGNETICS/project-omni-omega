@@ -10,6 +10,20 @@ OmniLoader Studio is a comprehensive end-to-end software for discovering, regist
 
 Get started with OmniLoader Studio in seconds! We provide **one-click** and **one-command** options for all platforms.
 
+### ⚡ GUI Installer (Recommended for Windows)
+
+The easiest way to install OmniLoader Studio with full control over the installation:
+
+1. Clone the repo or download the release
+2. Double-click **Install-GUI.bat** (Windows) or run `./install_gui.sh` (macOS/Linux)
+3. The GUI installer provides:
+   - **Choose installation directory** - Select where to install
+   - **Installation options** - Configure shortcuts, virtual environment, etc.
+   - **Real-time progress** - Watch the installation step by step
+   - **Run Now button** - Launch OmniLoader Studio immediately after install
+
+![GUI Installer](https://img.shields.io/badge/Feature-GUI%20Installer-ff00ff)
+
 ### ⚡ One-Click (VS Code)
 
 The fastest way to get started if you're using VS Code:
@@ -195,12 +209,20 @@ Codespaces will automatically:
 
 2. **Launch OmniLoader Studio**
 
-   **Windows (Recommended):**
+   **Option A: GUI Installer (Recommended for first-time users)**
+   
+   Double-click `Install-GUI.bat` (Windows) or run `./install_gui.sh` (macOS/Linux) for a guided installation with:
+   - Custom installation directory selection
+   - Installation options configuration
+   - Real-time progress display
+   - "Run Now" button when complete
+
+   **Option B: Windows (Command Line):**
    ```bash
    OmniLoader.bat
    ```
    
-   **Linux/macOS:**
+   **Option C: Linux/macOS:**
    ```bash
    ./run_omni.sh
    ```
