@@ -1,0 +1,198 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "⚡ Install (One Click)",
+      "type": "shell",
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}/scripts/install.ps1"
+        ]
+      },
+      "linux": {
+        "command": "${workspaceFolder}/scripts/install.sh"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/scripts/install.sh"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "⚡ Run (One Click)",
+      "type": "shell",
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}/scripts/run.ps1"
+        ]
+      },
+      "linux": {
+        "command": "${workspaceFolder}/scripts/run.sh"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/scripts/run.sh"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$",
+          "file": 0,
+          "location": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^Starting",
+          "endsPattern": "OmniLoader Studio is running"
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "⚡ Install + Run (One Click)",
+      "dependsOn": [
+        "⚡ Install (One Click)",
+        "⚡ Run (One Click)"
+      ],
+      "dependsOrder": "sequence",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "pytest",
+      "args": [
+        "tests/",
+        "-v"
+      ],
+      "windows": {
+        "command": ".\\venv\\Scripts\\activate && pytest tests/ -v"
+      },
+      "linux": {
+        "command": "source venv/bin/activate && pytest tests/ -v"
+      },
+      "osx": {
+        "command": "source venv/bin/activate && pytest tests/ -v"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Backend Only",
+      "type": "shell",
+      "command": "uvicorn",
+      "args": [
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload"
+      ],
+      "windows": {
+        "command": ".\\venv\\Scripts\\activate && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+      },
+      "linux": {
+        "command": "source venv/bin/activate && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+      },
+      "osx": {
+        "command": "source venv/bin/activate && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$",
+          "file": 0,
+          "location": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Started server process",
+          "endsPattern": "Application startup complete"
+        }
+      }
+    },
+    {
+      "label": "UI Only",
+      "type": "shell",
+      "command": "streamlit",
+      "args": [
+        "run",
+        "ui/app.py",
+        "--server.port",
+        "8501",
+        "--server.address",
+        "0.0.0.0"
+      ],
+      "windows": {
+        "command": ".\\venv\\Scripts\\activate && streamlit run ui/app.py --server.port 8501 --server.address 0.0.0.0"
+      },
+      "linux": {
+        "command": "source venv/bin/activate && streamlit run ui/app.py --server.port 8501 --server.address 0.0.0.0"
+      },
+      "osx": {
+        "command": "source venv/bin/activate && streamlit run ui/app.py --server.port 8501 --server.address 0.0.0.0"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}
