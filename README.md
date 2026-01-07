@@ -6,6 +6,109 @@ OmniLoader Studio is a comprehensive end-to-end software for discovering, regist
 
 ![OmniLoader Studio](https://img.shields.io/badge/Status-Production%20Ready-brightgreen) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![Platform](https://img.shields.io/badge/Platform-Windows%20|%20Linux%20|%20macOS-lightgrey)
 
+## 🚀 Onboarding (New Contributors)
+
+Get started with OmniLoader Studio in seconds! We provide **one-click** and **one-command** options for all platforms.
+
+### ⚡ One-Click (VS Code)
+
+The fastest way to get started if you're using VS Code:
+
+1. Clone the repo and open in VS Code
+2. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS)
+3. Type "Run Task" and select **Tasks: Run Task**
+4. Choose **⚡ Install + Run (One Click)**
+
+Or use the keyboard shortcut:
+- Press `Ctrl+Shift+B` (or `Cmd+Shift+B` on macOS) to run the default build task
+
+That's it! The installer will set up everything and launch OmniLoader Studio automatically.
+
+### 🖥️ One-Command (Terminal)
+
+If you prefer the command line:
+
+**macOS/Linux:**
+```bash
+git clone https://github.com/MASSIVEMAGNETICS/project-omni-omega.git
+cd project-omni-omega
+./scripts/install.sh && ./scripts/run.sh
+```
+
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/MASSIVEMAGNETICS/project-omni-omega.git
+cd project-omni-omega
+.\scripts\install.ps1; .\scripts\run.ps1
+```
+
+**Using Make (all platforms):**
+```bash
+make setup && make run
+```
+
+### 📋 What These Commands Do
+
+**Install** (`./scripts/install.sh` or `.\scripts\install.ps1`):
+- Checks Python 3.8+ is installed
+- Creates a virtual environment (`venv/`)
+- Installs all dependencies from `requirements.txt`
+- Validates the installation
+- **Idempotent**: Safe to run multiple times
+
+**Run** (`./scripts/run.sh` or `.\scripts\run.ps1`):
+- Activates the virtual environment
+- Starts the FastAPI backend on port 8000
+- Starts the Streamlit UI on port 8501
+- Opens your browser automatically
+- **Idempotent**: Checks if already running
+
+### 🔧 Troubleshooting
+
+**Python not found:**
+- **macOS**: `brew install python3`
+- **Linux**: `sudo apt install python3 python3-venv python3-pip`
+- **Windows**: Download from [python.org](https://www.python.org/downloads/) and check "Add Python to PATH"
+
+**Port already in use:**
+- Backend (8000) or UI (8501) may already be running
+- Check with: `lsof -i :8000` (macOS/Linux) or `netstat -ano | findstr :8000` (Windows)
+- Stop existing processes or change ports in the scripts
+
+**Dependencies fail to install:**
+- Ensure you have a stable internet connection
+- Try upgrading pip: `python -m pip install --upgrade pip`
+- On Windows, you may need Visual C++ Build Tools for some packages
+
+**Virtual environment activation fails:**
+- On Windows PowerShell, you may need to allow script execution:
+  ```powershell
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  ```
+
+**Backend fails to start:**
+- Check if Python modules are installed: `python -c "import fastapi, streamlit"`
+- Review logs in the terminal for specific errors
+- Ensure virtual environment is activated
+
+### ☁️ GitHub Codespaces
+
+Launch in the cloud with one click:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/MASSIVEMAGNETICS/project-omni-omega)
+
+Codespaces will automatically:
+- Set up the development environment
+- Install all dependencies
+- Be ready to run with `./scripts/run.sh`
+
+### 🎯 Next Steps After Installation
+
+1. **Access the Studio UI**: http://localhost:8501
+2. **Explore API docs**: http://localhost:8000/docs
+3. **Add your first model**: See [Adding Models](#adding-models) below
+4. **Run tests**: `make test` or `pytest tests/ -v`
+
 ## Features
 
 ### Studio Features
